@@ -3,7 +3,7 @@ const request = require('supertest')(baseUrl);
 const server = require('../server');
 
 describe('GET /', () => {
-  afterEach(() => {
+  afterAll(() => {
     server.close();
   });
 
