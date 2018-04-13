@@ -18,28 +18,41 @@ app.get('/', (req, res) => {
 });
 
 app.get('/search', (req, res) => {
-  
-  if (!req.query.city) {
-    res.status(422);
-    res.send('City parameter not found.');
+  let params = {
+    term:'pizza'
+  };
+
+  if (!req.query.city && !req.query.latitude && !req.query.longitude) {
+    res.status(422).send('Please provide a City or Latitude, Longitude.');
+    return;
   }
-  
+
+  if (req.query.city) {
+    params.location = req.query.city.toLowerCase();
+  } else {
+    try {
+      params.latitude = req.query.latitude;
+      params.longitude = req.query.longitude;
+    } catch(e) {
+      res.status(422);
+      res.send('Please provide a City or Latitude, Longitude.');
+      return;
+    }
+  }
+
   const client = yelp.client(process.env.YELP_API_KEY);
-  client.search({
-    term:'pizza',
-    location: req.query.city.toLowerCase()
-  }).then(response => {
-    res.send({
-      success: true,
-      locations: response.jsonBody.businesses
+  client.search(params)
+    .then(response => {
+      res.send({
+        success: true,
+        locations: response.jsonBody.businesses
+      });
+    }).catch(e => {
+      res.send({
+        success: false,
+        error: e.message
+      });
     });
-  }).catch(e => {
-    res.send({
-      success: false,
-      error: error,
-      locations: response.jsonBody.businesses
-    });
-  });
 });
 
 module.exports = app;
