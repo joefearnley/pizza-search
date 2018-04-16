@@ -6,15 +6,15 @@ const yelp = require('yelp-fusion');
 require('dotenv').config();
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
 
 app.use(express.static(__dirname + '/'));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname+'/index.html'));
+  res.sendFile(path.join(__dirname + '/index.html'));
 });
 
 app.get('/search', (req, res) => {
@@ -34,8 +34,7 @@ app.get('/search', (req, res) => {
       params.latitude = req.query.latitude;
       params.longitude = req.query.longitude;
     } catch(e) {
-      res.status(422);
-      res.send('Please provide a City or Latitude, Longitude.');
+      res.status(422).send('Please provide a City or Latitude, Longitude.');
       return;
     }
   }
