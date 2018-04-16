@@ -16,6 +16,12 @@ describe('GET /search', () => {
     expect(response.status).toBe(422);
   });
 
+  test('It returns a 422 when no city, latitude, and longitude', async () => {
+    let response = await request.get(`/search`);
+    expect(response.status).toBe(422);
+  });
+
+
   test('It returns a 200 when location is provided', async () => {
     let response = await request.get(`/search?city=${city}`);
     expect(response.status).toBe(200);
