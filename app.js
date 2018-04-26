@@ -22,7 +22,7 @@ app.get('/search', (req, res) => {
     term:'pizza'
   };
 
-  if (!req.query.city || (!req.query.latitude && !req.query.longitude)) {
+  if (!req.query.city && !req.query.latitude && !req.query.longitude) {
     res.status(422).send('Please provide a City or Latitude, Longitude.');
     return;
   }
